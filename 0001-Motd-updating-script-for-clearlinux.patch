@@ -16,7 +16,7 @@ index 0000000..e409986
 @@ -0,0 +1,13 @@
 +#!/bin/sh
 +
-+MOTDD="/etc/motd.d"
++MOTDD="/run/motd.d"
 +MOTDF="$MOTDD/clr-service-restart.motd"
 +
 +mkdir -p "$MOTDD"
