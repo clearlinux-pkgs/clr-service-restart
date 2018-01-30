@@ -1,0 +1,32 @@
+From dbce3b95152c696c36e80c069e8c797b04fb93da Mon Sep 17 00:00:00 2001
+From: Auke Kok <auke-jan.h.kok@intel.com>
+Date: Tue, 30 Jan 2018 10:57:25 -0800
+Subject: [PATCH] Motd updating script for clearlinux.
+
+---
+ clr-service-restart-motd.sh | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+ create mode 100644 clr-service-restart-motd.sh
+
+diff --git a/clr-service-restart-motd.sh b/clr-service-restart-motd.sh
+new file mode 100644
+index 0000000..e409986
+--- /dev/null
++++ b/clr-service-restart-motd.sh
+@@ -0,0 +1,13 @@
++#!/bin/sh
++
++MOTDD="/etc/motd.d"
++MOTDF="$MOTDD/clr-service-restart.motd"
++
++mkdir -p "$MOTDD"
++
++if [ -z "`clr-service-restart -a -n 2>&1`" ]; then
++	echo -e " * Some system services need a restart.\n   Run \`sudo clr-service-restart -a -n\` to view them." > "$MOTDF"
++else
++	rm -f "$MOTDF"
++fi
++
+-- 
+2.16.1
+
