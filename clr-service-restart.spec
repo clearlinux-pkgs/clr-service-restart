@@ -4,7 +4,7 @@
 #
 Name     : clr-service-restart
 Version  : 4
-Release  : 6
+Release  : 7
 URL      : https://github.com/clearlinux/clr-service-restart/releases/download/v4/clr-service-restart-4.tar.xz
 Source0  : https://github.com/clearlinux/clr-service-restart/releases/download/v4/clr-service-restart-4.tar.xz
 Source1  : clr-service-restart-motd.service
