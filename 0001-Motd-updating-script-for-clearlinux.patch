@@ -21,7 +21,7 @@ index 0000000..e409986
 +
 +mkdir -p "$MOTDD"
 +
-+if [ -z "`clr-service-restart -a -n 2>&1`" ]; then
++if [ -n "`clr-service-restart -a -n 2>&1`" ]; then
 +	echo -e " * Some system services need a restart.\n   Run \`sudo clr-service-restart -a -n\` to view them." > "$MOTDF"
 +else
 +	rm -f "$MOTDF"
