@@ -4,7 +4,7 @@
 #
 Name     : clr-service-restart
 Version  : 4
-Release  : 8
+Release  : 9
 URL      : https://github.com/clearlinux/clr-service-restart/releases/download/v4/clr-service-restart-4.tar.xz
 Source0  : https://github.com/clearlinux/clr-service-restart/releases/download/v4/clr-service-restart-4.tar.xz
 Source1  : clr-service-restart-motd.service
@@ -53,7 +53,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1518803076
+export SOURCE_DATE_EPOCH=1522264007
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -65,7 +65,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1518803076
+export SOURCE_DATE_EPOCH=1522264007
 rm -rf %{buildroot}
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
