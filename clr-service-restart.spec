@@ -4,16 +4,18 @@
 #
 Name     : clr-service-restart
 Version  : 4
-Release  : 10
+Release  : 11
 URL      : https://github.com/clearlinux/clr-service-restart/releases/download/v4/clr-service-restart-4.tar.xz
 Source0  : https://github.com/clearlinux/clr-service-restart/releases/download/v4/clr-service-restart-4.tar.xz
 Source1  : clr-service-restart-motd.service
 Summary  : No detailed summary available
 Group    : Development/Tools
 License  : GPL-3.0
-Requires: clr-service-restart-bin
-Requires: clr-service-restart-config
-Requires: clr-service-restart-doc
+Requires: clr-service-restart-bin = %{version}-%{release}
+Requires: clr-service-restart-data = %{version}-%{release}
+Requires: clr-service-restart-license = %{version}-%{release}
+Requires: clr-service-restart-man = %{version}-%{release}
+Requires: clr-service-restart-services = %{version}-%{release}
 Patch1: 0001-Motd-updating-script-for-clearlinux.patch
 
 %description
@@ -22,26 +24,45 @@ No detailed description available
 %package bin
 Summary: bin components for the clr-service-restart package.
 Group: Binaries
-Requires: clr-service-restart-config
+Requires: clr-service-restart-data = %{version}-%{release}
+Requires: clr-service-restart-license = %{version}-%{release}
+Requires: clr-service-restart-man = %{version}-%{release}
+Requires: clr-service-restart-services = %{version}-%{release}
 
 %description bin
 bin components for the clr-service-restart package.
 
 
-%package config
-Summary: config components for the clr-service-restart package.
+%package data
+Summary: data components for the clr-service-restart package.
+Group: Data
+
+%description data
+data components for the clr-service-restart package.
+
+
+%package license
+Summary: license components for the clr-service-restart package.
 Group: Default
 
-%description config
-config components for the clr-service-restart package.
+%description license
+license components for the clr-service-restart package.
 
 
-%package doc
-Summary: doc components for the clr-service-restart package.
-Group: Documentation
+%package man
+Summary: man components for the clr-service-restart package.
+Group: Default
 
-%description doc
-doc components for the clr-service-restart package.
+%description man
+man components for the clr-service-restart package.
+
+
+%package services
+Summary: services components for the clr-service-restart package.
+Group: Systemd services
+
+%description services
+services components for the clr-service-restart package.
 
 
 %prep
@@ -53,7 +74,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1522264007
+export SOURCE_DATE_EPOCH=1541613038
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -65,17 +86,21 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1522264007
+export SOURCE_DATE_EPOCH=1541613038
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/clr-service-restart
+cp COPYING %{buildroot}/usr/share/package-licenses/clr-service-restart/COPYING
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/clr-service-restart-motd.service
-## make_install_append content
+## install_append content
 mkdir -p %{buildroot}/usr/bin
 install -m0755 clr-service-restart-motd.sh %{buildroot}/usr/bin/clr-service-restart-motd.sh
 mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -sf ../clr-service-restart-motd.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/clr-service-restart-motd.service
-## make_install_append end
+mkdir -p %{buildroot}/usr/share/clr-service-restart/
+ln -sf /dev/null %{buildroot}/usr/share/clr-service-restart/dbus.service
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -85,11 +110,19 @@ ln -sf ../clr-service-restart-motd.service %{buildroot}/usr/lib/systemd/system/u
 /usr/bin/clr-service-restart
 /usr/bin/clr-service-restart-motd.sh
 
-%files config
+%files data
+%defattr(-,root,root,-)
+/usr/share/clr-service-restart/dbus.service
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/clr-service-restart/COPYING
+
+%files man
+%defattr(0644,root,root,0755)
+/usr/share/man/man1/clr-service-restart.1
+
+%files services
 %defattr(-,root,root,-)
 /usr/lib/systemd/system/clr-service-restart-motd.service
 /usr/lib/systemd/system/update-triggers.target.wants/clr-service-restart-motd.service
-
-%files doc
-%defattr(-,root,root,-)
-%doc /usr/share/man/man1/*

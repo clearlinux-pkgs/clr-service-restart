@@ -2,3 +2,7 @@ mkdir -p %{buildroot}/usr/bin
 install -m0755 clr-service-restart-motd.sh %{buildroot}/usr/bin/clr-service-restart-motd.sh
 mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -sf ../clr-service-restart-motd.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/clr-service-restart-motd.service
+
+# Always disallow D-Bus
+mkdir -p %{buildroot}/usr/share/clr-service-restart/
+ln -sf /dev/null %{buildroot}/usr/share/clr-service-restart/dbus.service
