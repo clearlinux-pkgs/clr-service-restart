@@ -4,7 +4,7 @@
 #
 Name     : clr-service-restart
 Version  : 6
-Release  : 13
+Release  : 14
 URL      : https://github.com/clearlinux/clr-service-restart/releases/download/v6/clr-service-restart-6.tar.xz
 Source0  : https://github.com/clearlinux/clr-service-restart/releases/download/v6/clr-service-restart-6.tar.xz
 Source1  : clr-service-restart-motd.service
@@ -73,7 +73,8 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1553902562
+export SOURCE_DATE_EPOCH=1554998387
+export LDFLAGS="${LDFLAGS} -fno-lto"
 %configure --disable-static
 make  %{?_smp_mflags}
 
@@ -85,7 +86,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1553902562
+export SOURCE_DATE_EPOCH=1554998387
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clr-service-restart
 cp COPYING %{buildroot}/usr/share/package-licenses/clr-service-restart/COPYING
