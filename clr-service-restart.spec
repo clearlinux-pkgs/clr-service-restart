@@ -4,7 +4,7 @@
 #
 Name     : clr-service-restart
 Version  : 8
-Release  : 16
+Release  : 17
 URL      : https://github.com/clearlinux/clr-service-restart/releases/download/v8/clr-service-restart-8.tar.xz
 Source0  : https://github.com/clearlinux/clr-service-restart/releases/download/v8/clr-service-restart-8.tar.xz
 Source1  : clr-service-restart-motd.service
@@ -66,34 +66,35 @@ services components for the clr-service-restart package.
 
 %prep
 %setup -q -n clr-service-restart-8
+cd %{_builddir}/clr-service-restart-8
 %patch1 -p1
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1559766305
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1604091741
 export GCC_IGNORE_WERROR=1
 export CFLAGS="$CFLAGS -fno-lto "
-export FCFLAGS="$CFLAGS -fno-lto "
-export FFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$FFLAGS -fno-lto "
+export FFLAGS="$FFLAGS -fno-lto "
 export CXXFLAGS="$CXXFLAGS -fno-lto "
 %configure --disable-static
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-make VERBOSE=1 V=1 %{?_smp_mflags} check
+make %{?_smp_mflags} check
 
 %install
-export SOURCE_DATE_EPOCH=1559766305
+export SOURCE_DATE_EPOCH=1604091741
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/clr-service-restart
-cp COPYING %{buildroot}/usr/share/package-licenses/clr-service-restart/COPYING
+cp %{_builddir}/clr-service-restart-8/COPYING %{buildroot}/usr/share/package-licenses/clr-service-restart/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 %make_install
 mkdir -p %{buildroot}/usr/lib/systemd/system
 install -m 0644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/clr-service-restart-motd.service
@@ -102,6 +103,8 @@ mkdir -p %{buildroot}/usr/bin
 install -m0755 clr-service-restart-motd.sh %{buildroot}/usr/bin/clr-service-restart-motd.sh
 mkdir -p %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants
 ln -sf ../clr-service-restart-motd.service %{buildroot}/usr/lib/systemd/system/update-triggers.target.wants/clr-service-restart-motd.service
+
+# Always disallow D-Bus
 mkdir -p %{buildroot}/usr/share/clr-service-restart/
 ln -sf /dev/null %{buildroot}/usr/share/clr-service-restart/dbus.service
 ## install_append end
@@ -120,7 +123,7 @@ ln -sf /dev/null %{buildroot}/usr/share/clr-service-restart/dbus.service
 
 %files license
 %defattr(0644,root,root,0755)
-/usr/share/package-licenses/clr-service-restart/COPYING
+/usr/share/package-licenses/clr-service-restart/8624bcdae55baeef00cd11d5dfcfa60f68710a02
 
 %files man
 %defattr(0644,root,root,0755)
